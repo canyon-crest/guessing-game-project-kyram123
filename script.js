@@ -13,11 +13,31 @@ guessBtn.addEventListener("click", makeGuess);
 function time(){
     let d = new Date();
     //concatenate the date and time
-    let str = d = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear()
+    
     //Add ticking clock
     //update here
+ 
+    let hour = d.getHours();
+    let mins =d.getMinutes();
+    let secs = d.getSeconds();
+    let amPm = "a.m.";
+    let dom = d.getDate();
+    if(hour >= 12){
+        hour = hour -12;
+        amPm = "p.m.";
+    }
+    if (hour ==0){
+        hour =12;
+    }
+    if(mins<10){
+        mins="0"+mins;
+    }
+    let str = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear() + " Time: " + hour + ":" + mins + ":" + secs + " " + amPm;
     return str;
 }
+time();
+setInterval(time, 1000);
+
 function play(){
     playBtn.disabled = true; 
     guessBtn.disabled = false;
@@ -79,3 +99,4 @@ function updateScore(){
     let avg = sum/scoreArr.length;
     avgScore.textContent = "Average Score: " + avg.toFixed(2);
 }
+
