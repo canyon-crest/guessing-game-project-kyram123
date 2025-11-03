@@ -1,10 +1,12 @@
 // time
+const date = document.getElementById('date');
 date.textContent = time();
-
+currentTime.textContent = now();
 // global variables/constants
 let score, answer, level;
 const levelArr = document.getElementsByName("level");
 const scoreArr = [];
+const currentTime = document.getElementById('currentTime');
 
 // event listeners
 playBtn.addEventListener("click", play);
@@ -13,18 +15,40 @@ guessBtn.addEventListener("click", makeGuess);
 function time(){
     let d = new Date();
     //concatenate the date and time
-    
+    let dayArr = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    let monthArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let day = dayArr[d.getDay()];
+    let month = monthArr[d.getMonth()];
     //Add ticking clock
     //update here
- 
-    let hour = d.getHours();
-    let mins =d.getMinutes();
-    let secs = d.getSeconds();
-    let amPm = "a.m.";
-    let dom = d.getDate();
+    if (dateNum ==1 || dateNum ==21 || dateNum ==31){
+        dateNum = dateNum + "st";
+    }
+    else if (dateNum ==2 || dateNum ==22){
+        dateNum = dateNum + "nd";
+    }
+    else if (dateNum ==3 || dateNum ==23){
+        dateNum = dateNum + "rd";
+    }
+    else{
+        dateNum = dateNum + "th";
+    }
+    let str = monthName + '' + dateNum + ', ' + year;
+    return str;
+}
+
+function now(){
+    let a = new Date();
+    let hour = a.getHours();
+    let mins = a.getMinutes();
+    let secs = a.getSeconds();
+    let amPm = "";
     if(hour >= 12){
-        hour = hour -12;
+        hour -= 12;
         amPm = "p.m.";
+    }
+    else{
+        amPm = "a.m.";
     }
     if (hour ==0){
         hour =12;
@@ -32,16 +56,22 @@ function time(){
     if(mins<10){
         mins="0"+mins;
     }
-    let str = d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear() + " Time: " + hour + ":" + mins + ":" + secs + " " + amPm;
-    return str;
+    if (secs<10){
+        secs="0"+secs;
+    }
+    return hour + ":" + mins + ":" + secs + " " + amPm;
 }
-time();
-setInterval(time, 1000);
+setInterval(function(){
+    currentTime.textContent = now();
+}, 1000);
+
+
 
 function play(){
     playBtn.disabled = true; 
     guessBtn.disabled = false;
     guess.disabled = false;
+    giveUpBtn.disabled = false;
     for(let i=0; i<levelArr.length; i++){
         levelArr[i].disabled=true;
         if(levelArr[i].checked){
@@ -78,6 +108,7 @@ function reset(){
     guess.value = "";
     guess.placehoder = "";
     playBtn.disabled = false;
+    giveUpBtn.disabled = false;
     for(let i=0; i< levelArr.length; i++){
         levelArr[i].disabled = false;
     }
@@ -98,5 +129,9 @@ function updateScore(){
     }
     let avg = sum/scoreArr.length;
     avgScore.textContent = "Average Score: " + avg.toFixed(2);
+}
+
+function giveUp(){
+    giveUpBtn.disabled = true;
 }
 
