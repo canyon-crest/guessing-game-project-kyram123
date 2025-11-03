@@ -1,16 +1,17 @@
 // time
 const date = document.getElementById('date');
+const currentTime = document.getElementById('currentTime');
 date.textContent = time();
 currentTime.textContent = now();
 // global variables/constants
 let score, answer, level;
 const levelArr = document.getElementsByName("level");
 const scoreArr = [];
-const currentTime = document.getElementById('currentTime');
 
 // event listeners
 playBtn.addEventListener("click", play);
 guessBtn.addEventListener("click", makeGuess);
+giveUpBtn.addEventListener("click", giveUp);
 
 function time(){
     let d = new Date();
@@ -19,6 +20,7 @@ function time(){
     let monthArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let day = dayArr[d.getDay()];
     let month = monthArr[d.getMonth()];
+    let dateNum = d.getDate();
     //Add ticking clock
     //update here
     if (dateNum ==1 || dateNum ==21 || dateNum ==31){
@@ -33,10 +35,12 @@ function time(){
     else{
         dateNum = dateNum + "th";
     }
+    monthName = monthArr[d.getMonth()] + ' ';
+    let year = d.getFullYear();
     let str = monthName + '' + dateNum + ', ' + year;
     return str;
 }
-
+//time function
 function now(){
     let a = new Date();
     let hour = a.getHours();
@@ -44,13 +48,15 @@ function now(){
     let secs = a.getSeconds();
     let amPm = "";
     if(hour >= 12){
-        hour -= 12;
         amPm = "p.m.";
     }
     else{
         amPm = "a.m.";
     }
-    if (hour ==0){
+    if (hour >0){
+        hour -=12;
+    }
+    else if (hour ==0){
         hour =12;
     }
     if(mins<10){
@@ -65,9 +71,12 @@ setInterval(function(){
     currentTime.textContent = now();
 }, 1000);
 
-
-
 function play(){
+    let name = document.getElementById("name").value;
+    if(name == ""){
+        alert("Please enter your name to play!");
+        return;
+    }
     playBtn.disabled = true; 
     guessBtn.disabled = false;
     guess.disabled = false;
@@ -104,7 +113,7 @@ function makeGuess(){
     }
 }
 function reset(){
-    guessBtn.disabled = true;
+    guessBtn.disabled = false;
     guess.value = "";
     guess.placehoder = "";
     playBtn.disabled = false;
@@ -116,7 +125,6 @@ function reset(){
 
 function updateScore(){
     scoreArr.push(score); // adds current score to array of scores
-    wins.textContent = "Total wins: " + scoreArr.length;
     let sum = 0;
     scoreArr.sort((a, b) => a-b); //sorts ascending
     const lb = document.getElementsByName("leaderboard");
@@ -133,5 +141,9 @@ function updateScore(){
 
 function giveUp(){
     giveUpBtn.disabled = true;
+    msg.textContent = "The answer was " + answer + ". Better luck next time!";
+    score = Number(level);
+    reset();
+    updateScore();
 }
 
