@@ -71,16 +71,21 @@ setInterval(function(){
     currentTime.textContent = now();
 }, 1000);
 
+
 function play(){
-    let name = document.getElementById("name").value;
-    if(name == ""){
-        alert("Please enter your name to play!");
-        return;
-    }
     playBtn.disabled = true; 
     guessBtn.disabled = false;
     guess.disabled = false;
     giveUpBtn.disabled = false;
+    if (names.value == ''){
+        msg.textContent = "Please enter your name to start playing!";
+        playBtn.disabled = false;
+        guessBtn.disabled = true;
+        guess.disabled = true;
+        giveUpBtn.disabled = true;
+        return;
+    }
+    names.value = names.value.charAt(0).toUpperCase() + names.value.substring(1).toLowerCase();
     for(let i=0; i<levelArr.length; i++){
         levelArr[i].disabled=true;
         if(levelArr[i].checked){
@@ -96,18 +101,18 @@ function play(){
 function makeGuess(){
     let userGuess = parseInt(guess.value);
     if(isNaN(userGuess) || userGuess < 1 || userGuess > level){
-        msg.textContent = "INVALID, guess a number!"
+        msg.textContent = "INVALID " + names.value + ", guess a number!"
         return;
     }
     score++;
     if( userGuess > answer) {
-        msg.textContent = "Too high, guess again!"
+        msg.textContent = "Too high "+ names.value + " , guess again!"
     }
     else if( userGuess < answer) {
-        msg.textContent = "Too low, guess again!"
+        msg.textContent = "Too low " + names.value + " ,guess again!"
     }
     else{
-        msg.textContent = "Correct! It took " + score + " tries.";
+        msg.textContent = "Correct " + names.value + " ! It took " + score + " tries.";
         reset();
         updateScore();
     }
@@ -141,7 +146,7 @@ function updateScore(){
 
 function giveUp(){
     giveUpBtn.disabled = true;
-    msg.textContent = "The answer was " + answer + ". Better luck next time!";
+    msg.textContent = names.value + " ,the answer was " + answer + ". Better luck next time!";
     score = Number(level);
     reset();
     updateScore();
