@@ -4,7 +4,7 @@ const currentTime = document.getElementById('currentTime');
 date.textContent = time();
 currentTime.textContent = now();
 // global variables/constants
-let score, answer, level;
+let score, answer, level, evaluation;
 const levelArr = document.getElementsByName("level");
 const scoreArr = [];
 
@@ -105,14 +105,82 @@ function makeGuess(){
         return;
     }
     score++;
+    let temperature = "";
+    let diff = Math.abs(userGuess - answer);
+    if (level == 3){
+        if (diff >=2){
+            temperature = "cold";
+        }
+        else if (diff ==1){
+            temperature = "warm";        
+        }
+        else{
+            temperature = "hot";
+        }
+    }
+    else if (level == 10){
+        if (diff >=5){
+            temperature = "cold";
+        }
+        else if (diff >=2){
+            temperature = "warm";        
+        }
+        else{
+            temperature = "hot";
+        }
+    }
+    else if (level == 100){
+        if (diff >=20){
+            temperature = "cold";
+        }
+        else if (diff >=10){
+            temperature = "warm";        
+        }
+        else{
+            temperature = "hot";
+        }
+    }
     if( userGuess > answer) {
-        msg.textContent = "Too high "+ names.value + " , guess again!"
+        msg.textContent = "Too high "+ names.value + ", guess again! Your answer is " + temperature + ".";
     }
     else if( userGuess < answer) {
-        msg.textContent = "Too low " + names.value + " ,guess again!"
+        msg.textContent = "Too low " + names.value + ", guess again! Your answer is " + temperature + ".";
     }
     else{
-        msg.textContent = "Correct " + names.value + " ! It took " + score + " tries.";
+        if (level == 3){
+            if (score ==1){
+                evaluation = "good";
+            }
+            else if (score == 2){
+                evaluation = "ok";
+            }
+            else{
+                evaluation = "bad";
+            }
+        }
+        else if (level == 10){
+            if (score <=2){
+                evaluation = "good";
+            }
+            else if (score <=4){
+                evaluation = "ok";
+            }
+            else{
+                evaluation = "bad";
+            }
+        }
+        else if (level == 100){
+            if (score <=3){
+                evaluation = "good";
+            }
+            else if (score <=7){
+                evaluation = "ok";
+            }
+            else{
+                evaluation = "bad";
+            }
+        }
+        msg.textContent = "Correct " + names.value + " ! It took " + score + " tries. Your score was evaluated as " + evaluation + ".";
         reset();
         updateScore();
     }
@@ -146,9 +214,11 @@ function updateScore(){
 
 function giveUp(){
     giveUpBtn.disabled = true;
-    msg.textContent = names.value + " ,the answer was " + answer + ". Better luck next time!";
+    msg.textContent = names.value + ", the answer was " + answer + ". Better luck next time!";
     score = Number(level);
     reset();
     updateScore();
 }
+
+
 
