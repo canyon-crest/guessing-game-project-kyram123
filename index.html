@@ -3,25 +3,47 @@
   <head>
     <title>JavaScript Number Guessing Game</title>
     <script src="script.js" defer></script>
+    <style>
+      /* Add styling for slider ticks */
+      .slider-container {
+        width: 300px;
+        margin-bottom: 10px;
+      }
+      #levelSlider {
+        width: 100%;
+      }
+      .tick-labels {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 5px;
+        font-weight: bold;
+      }
+    </style>
   </head>
   <body>
     <p id="date"></p>
     <p id="currentTime"></p>
-    <p id = "gameClock">Elapsed time: 0.00 seconds</p>
-    <p id = "timeStats">Fastest Time: 0.00s | Average Time: 0.00s</p>
-    <p id ="gameClock"></p>
-    <h3>Level</h3>
-    <input type="radio" name="level" id="e" value="3" checked><label for="e">Easy</label>
-    <input type="radio" name="level" id="m" value="10"><label for="m">Medium</label>
-    <input type="radio" name="level" id="h" value="100"><label for="h">Hard</label>
-    <br>
-    <input type = "text" id="names" placeholder="Enter your name" enabled>
+    <p id="gameClock">Elapsed time: 0.00 seconds</p>
+    <p id="timeStats">Fastest Time: 0.00s | Average Time: 0.00s</p>
+
+    <h3>Level: <span id="levelName">Easy</span></h3>
+    <div class="slider-container">
+      <input type="range" min="1" max="3" step="1" value="1" id="levelSlider">
+      <div class="tick-labels">
+        <span>Easy</span>
+        <span>Medium</span>
+        <span>Hard</span>
+      </div>
+    </div>
+
+    <input type="text" id="names" placeholder="Enter your name">
     <button id="playBtn">Play</button>
 
     <h3 id="msg">Select a Level</h3>
     <input type="text" id="guess" disabled>
     <button id="guessBtn" disabled>Guess</button>
     <button id="giveUpBtn" disabled>Give Up</button>
+    <button id="hintBtn" disabled>Hint</button>
 
     <h3>Stats</h3>
     <p id="wins">Total wins: 0</p>
@@ -32,6 +54,27 @@
       <li name="leaderboard">100</li>
       <li name="leaderboard">100</li>
       <li name="leaderboard">100</li>
+    </ol>
+
+    <h3>Easy Leaderboard</h3>
+    <ol id="easyLeaderboard">
+      <li name="easyBoard">–</li>
+      <li name="easyBoard">–</li>
+      <li name="easyBoard">–</li>
+    </ol>
+
+    <h3>Medium Leaderboard</h3>
+    <ol id="mediumLeaderboard">
+      <li name="mediumBoard">–</li>
+      <li name="mediumBoard">–</li>
+      <li name="mediumBoard">–</li>
+    </ol>
+
+    <h3>Hard Leaderboard</h3>
+    <ol id="hardLeaderboard">
+      <li name="hardBoard">–</li>
+      <li name="hardBoard">–</li>
+      <li name="hardBoard">–</li>
     </ol>
   </body>
 </html>
