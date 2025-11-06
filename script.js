@@ -129,6 +129,7 @@ function makeGuess(){
     if(isNaN(userGuess) || userGuess < 1 || userGuess > level){
         msg.textContent = "INVALID " + names.value + ", guess a number!";
         msg.style.color = "red";
+        guess.value = "";
         return;
     }
     score++;
@@ -138,25 +139,30 @@ function makeGuess(){
         if (diff >=2){ temperature = "cold"; }
         else if (diff ==1){ temperature = "warm"; }
         else{ temperature = "hot"; }
+        guess.value = "";
     }
     else if (level == 10){
         if (diff >=5){ temperature = "cold"; }
         else if (diff >=2){ temperature = "warm"; }
         else{ temperature = "hot"; }
+        guess.value = "";
     }
     else if (level == 100){
         if (diff >=20){ temperature = "cold"; }
         else if (diff >=10){ temperature = "warm"; }
         else{ temperature = "hot"; }
+        guess.value = "";
     }
 
     if(userGuess > answer){
         msg.textContent = "Too high "+ names.value + ", guess again! Your answer is " + temperature + ".";
         msg.style.color = "orange";
+        guess.value = "";
     }
     else if(userGuess < answer){
         msg.textContent = "Too low " + names.value + ", guess again! Your answer is " + temperature + ".";
         msg.style.color = "blue";
+        guess.value = "";
     }
     else{
         clearInterval(timerInterval);
@@ -192,7 +198,8 @@ function makeGuess(){
         guessBtn.disabled = true;
         giveUpBtn.disabled = true;
         hintBtn.disabled = true;
-
+        guess.disabled = true;
+        guess.value = "";
         totalWins++;
         wins.textContent = "Total wins: " + totalWins;
 
@@ -200,12 +207,6 @@ function makeGuess(){
 
         updateScore();
     }
-}
-
-function reset(){
-    guess.value = "";
-    guess.placeholder = "";
-    document.getElementById("gameClock").textContent = "Elapsed time: 0.00 seconds";
 }
 
 function updateScore(){
@@ -299,3 +300,9 @@ hintBtn.addEventListener("click", () => {
     msg.textContent = "Hint: The number is " + (answer % 2 === 0 ? "even" : "odd") + "!";
     msg.style.color = "purple";
 });
+
+function reset(){
+    guess.value = "";
+    guess.placeholder = "";
+    document.getElementById("gameClock").textContent = "Elapsed time: 0.00 seconds";
+}
